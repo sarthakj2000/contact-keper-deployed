@@ -17,11 +17,12 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/contacts', require('./routes/contacts'));
 
 // Serve static assets if in production
-if (process.env.NODE_ENV == 'production') {
-    // Set static folder
+if (process.env.NODE_ENV === 'production') {
+    // Serve static files from the React app
+    app.use(express.static(path.resolve(__dirname, 'client', 'build')));
 
-    app.get('/', (req, res) => {
-        app.use(express.static(path.resolve(__dirname, 'client', 'build')));
+    // Serve the main index.html file for any other routes
+    app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     });
 }
